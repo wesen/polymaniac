@@ -56,26 +56,40 @@ public class BaumApp extends MidiApp {
 
 	void drawNetwork() {
 		// draw vertices
-		fill(160);
+	
+		// draw edges 
+//		stroke(200);
+//		
+//		beginShape(LINES);
+//		for (int i = 0; i < physics.numberOfSprings(); ++i) {
+//			Spring e = physics.getSpring(i);
+//			Particle a = e.getOneEnd();
+//			Particle b = e.getTheOtherEnd();
+//			vertex(a.position().x(), a.position().y());
+//			vertex(b.position().x(), b.position().y());
+//		}
+//		endShape();
+
+		fill(255);
 		noStroke();
 		for (int i = 0; i < physics.numberOfParticles(); ++i) {
 			// check if i has not modified itself due to event from midi
 			Particle v = physics.getParticle(i);
+			// glowpoint(v.position().x(), v.position().y(), (int)NODE_SIZE);
 			ellipse(v.position().x(), v.position().y(), NODE_SIZE, NODE_SIZE);
 		}
 
-		// draw edges 
-		stroke(0);
-		beginShape(LINES);
-		for (int i = 0; i < physics.numberOfSprings(); ++i) {
-			Spring e = physics.getSpring(i);
-			Particle a = e.getOneEnd();
-			Particle b = e.getTheOtherEnd();
-			vertex(a.position().x(), a.position().y());
-			vertex(b.position().x(), b.position().y());
-		}
-		endShape();
+	}
+	
 
+	void glowpoint(float px, float py, int size) {
+	  for (int i=-2;i<size;i++) {
+	    for (int j=-2;j<size;j++) {
+	      float a = 0.8f - i*i*0.1f - j*j*0.1f;
+	      stroke(255,a*256);
+	      point(px+i,py+j);
+	    }
+	  }
 	}
 
 	// ME ////////////////////////////////////////////

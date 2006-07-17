@@ -49,7 +49,7 @@ public class CirclesApp extends MidiApp {
 //	  size(dim,dim,P3D);
       ellipseMode(CENTER_RADIUS);
 //	  background(0);
-//	  framerate(1);
+      framerate(5);
 
 	  // make some discs
 	  discs = new Disc[num];
@@ -70,11 +70,12 @@ public class CirclesApp extends MidiApp {
 //	 main
 	public void draw() {
       background(0);
-	  // move discs
+      
+ 	  // move discs
 	  for (int c=0;c<num;c++) {
+		    discs[c].render();
+		    discs[c].renderPxRiders();
 	    discs[c].move();
-	    discs[c].render();
-	    discs[c].renderPxRiders();
 	  }
 	  time++;
 	}

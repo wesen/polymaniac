@@ -22,6 +22,7 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 
 	ArrayList backgroundApps = new ArrayList();
 	ArrayList foregroundApps = new ArrayList();
+	String midiDeviceName = "MIDI Yoke NT:  3";
 	Component mirrorComponent;
 	
 	public void clearApps(ArrayList appList) {
@@ -83,7 +84,7 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 
 
 	public void createMidiHandler() {
-		midiHandler = new MidiHandler(this, "MIDI Yoke NT:  3");;
+		midiHandler = new MidiHandler(this, midiDeviceName);
 		midiHandler.openMidi();
 	}
 	
@@ -120,7 +121,7 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	}
 
 	public void draw() {
-		 background(102);
+		 background(0);
 	}
 		
 	public static void printDisplayInformation() {
@@ -136,10 +137,12 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	
 	static public final String ARGS_STANDALONE = "--standalone";
 	static public final String ARGS_CLASS = "--class";
+	static public final String ARGS_MIDI = "--midi";
 	
 	public static void main(String args[]) {
 		printDisplayInformation();
 		
+		String midiDeviceName = "MIDI Yoke NT:  3";
 		String appClassName = "bl0rg.vj.Polymaniac";
 		// parse parameters
 		int argIndex = 0;
@@ -170,6 +173,8 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 				} else {
 					System.err.println("Display " + value + " does not exist, " + "using the default display instead.");
 				}
+			} else if (param.equals(ARGS_MIDI)) {
+				midiDeviceName = value;
 			}
 			
 			argIndex++;
@@ -204,6 +209,7 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 			System.exit(-1);
 		}
 		
+		app.midiDeviceName = midiDeviceName;
 		app.init();
 		//		wait until the applet has figured out its width
 		// hoping that this won't hang if the applet has an exception

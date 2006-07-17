@@ -23,7 +23,7 @@ public class PixelRobotApp extends MidiApp {
 	
 	public static MidiAppMapping[] getDefaultMappings() {
 		return new MidiAppMapping[] { 
-				new MidiAppNoteMapping("next", "", MidiHandler.MIDI_DRUM_CHANNEL, 61)};
+				new MidiAppNoteMapping("next", "", MidiHandler.MIDI_DRUM_CHANNEL, 62 )};
 	}
 	
 	// PixelRobotFitter fitter = new PixelRobotFitter(200/8, 200/12);
@@ -43,7 +43,7 @@ public class PixelRobotApp extends MidiApp {
 	}
 	
 	public synchronized void draw() {
-		robot.draw( 10, 10);
+		robot.draw( 45, 10);
 	    //	fitter.drawone();
 		//if (fitter.at00())
 		//	next();
@@ -165,7 +165,7 @@ public class PixelRobotApp extends MidiApp {
 					switch(m) {
 					case EMPTY :
 					case AVOID : break; // fill(bgcolor); break;
-					case SOLID : fill(fgcolor); break;
+					case SOLID : fill(180, 150); break;
 					}
 					if (m == SOLID) 
 						rect(x1,y1,xscale,yscale);      
