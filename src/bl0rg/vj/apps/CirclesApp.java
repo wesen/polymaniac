@@ -28,6 +28,7 @@ public class CirclesApp extends MidiApp {
 	}
 	public CirclesApp(PApplet parent, MidiHandler midiHandler) {
 		this(parent, midiHandler, CirclesApp.getDefaultMappings());
+		dim = min(parent.width, parent.height);
 	}
 	
 	
@@ -36,7 +37,7 @@ public class CirclesApp extends MidiApp {
    }
 
    //	 dimensions
-	int dim = 200;
+	int dim ;
 	int num = 50;
 	int time = 0;
 

@@ -32,6 +32,8 @@ public class PolymaniacStandalone extends Polymaniac {
 		String drumString = "qweertyuiop";
 		String bassString = "asdfghjkl";
 		String eventString = "zxcvbnm";
+		
+		super.keyReleased();
 		if (eventString.indexOf(key) >= 0) {
 			sendNoteOff(MidiHandler.MIDI_EVENT_CHANNEL, eventString.indexOf(key) + 60);
 		} else if (synthString.indexOf(key) >= 0) {

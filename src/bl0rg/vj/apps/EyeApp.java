@@ -74,7 +74,7 @@ public class EyeApp extends MidiApp {
 		Eye e1, e2, e3, e4, e5;
 		
    public void setup() {
-	   size(200, 200);
+	   // size(pare, 200);
 	   smooth();
 	   noStroke();
 	   e1 = new Eye( 50,  16,  80);

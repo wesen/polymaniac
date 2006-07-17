@@ -118,7 +118,7 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	
 	public void setup() 
 	{
-		  size(200, 200, P3D);
+		  size(320, 240, P3D);
 	//	  smooth();
 		  framerate(30);
 

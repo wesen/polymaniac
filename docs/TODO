@@ -18,7 +18,7 @@ X reflection for events, parameters
 X framerate for MidiApp
    - erstmal nicht, das sollen die apps bitte selber machen
  
-- size from 200x200
+X size from 200x200
 - play midi file
 - quicktime recording
 
@@ -27,7 +27,9 @@ X reflection for registered apps
    - mapping iterators?? toArray();
    - access static fields for info and stuff, defualt mappings, etc... or else static methods but that's ncool
 - class loader
-  default parameter
+  - subclass PApplet so that you can take plain PApplets
+- default parameter
+  - parameter midi mapping
   - parameter introspection
 - zoom for MidiApp
    - noch kein problem
