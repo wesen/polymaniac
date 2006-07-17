@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/manuel/My Documents/promidi.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/manuel/My Documents/processing-0115/lib/core.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/manuel/My Documents/processing-0115/libraries/physics/library/physics.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/manuel/My Documents/processing-0115/libraries/animation/library/animation.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

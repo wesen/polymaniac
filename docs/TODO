@@ -1,0 +1,33 @@
+TODO PolyManiac:
+
+X check into subversion
+X import new Papplet wrapper code
+  X Physics draw should not be called!!!
+X multiple displays
+  X repaint event for delegate component, somehow need to register the delegate with the applet
+  X flackern, probably using thread for delegate component
+  X peformance, check that not redrawn twice etc...
+X background/foreground apps
+X reflection for events, parameters
+X reflection for registered apps
+   - mapping iterators?? toArray();
+   - access static fields for info and stuff, defualt mappings, etc... or else static methods but that's ncool
+ X erstmal keine GUI, 
+   - vollbild
+ X midi noten???
+ X Polymaniac extends MidiApp, build scene triggers -> that's wrong, changed midihandler to remove midiapp references and replace with Object
+ X app list, draw order, background foreground
+ - class loader
+ X switches fuer main
+- default parameter
+- parameter introspection
+- size from 200x200
+- play midi file
+- quicktime recording
+- framerate for MidiApp
+- zoom for MidiApp
+ 
+- midi clock parsing
+  - erstmal Live sequencer
+- automatically build jar file for promidi
+- gui for sequencer
