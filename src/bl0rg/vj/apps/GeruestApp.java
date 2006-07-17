@@ -11,6 +11,10 @@ public class GeruestApp extends MidiApp {
 		super(parent, midiHandler, mappings);
 	}
 	
+	public GeruestApp(PApplet parent, MidiHandler midiHandler) {
+		super(parent, midiHandler, GeruestApp.getDefaultMappings());
+	}
+	
    public static MidiAppMapping[] getDefaultMappings() {
 		return new MidiAppMapping[] { 
 				new MidiAppNoteMapping("blabla", "", MidiHandler.MIDI_DRUM_CHANNEL, -1),

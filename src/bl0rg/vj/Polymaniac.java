@@ -37,7 +37,8 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	}
 	
 	public void stop() {
-		midiHandler.close();
+		if (midiHandler != null)
+			midiHandler.close();
 	}
 	
 	public void clearForegroundApps() {
@@ -88,10 +89,8 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	
 	public void setup() 
 	{
-		  size(200, 200);
-		  stroke(102);
-		  ellipseMode(CENTER);
-		  smooth();
+		  size(200, 200, P3D);
+	//	  smooth();
 		  framerate(30);
 
 		  createMidiHandler();
@@ -100,6 +99,7 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 			  	MidiAppReflection baumReflection;
 				baumReflection = new MidiAppReflection("BaumApp");
 				MidiApp baumApp = new BaumApp(this, midiHandler, baumReflection.getDefaultMappings());
+				addForegroundApp(new PixelRobotApp(this, midiHandler));
 				addForegroundApp(baumApp);
 				// addBackgroundApp(new EyeApp(this, midiHandler));
 				addBackgroundApp(new CirclesApp(this, midiHandler));

@@ -36,6 +36,7 @@ public class BaumApp extends MidiApp {
    }
 
 	public synchronized void draw() {
+		ellipseMode(CENTER);
 		// println("physics draw");
 		physics.tick(1.0f);
 		if (physics.numberOfParticles() > 1)
