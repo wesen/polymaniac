@@ -25,27 +25,10 @@ public class PolymaniacFrame extends Frame {
 		super(configuration);
 		this.applet = applet;
 		
-		Color backgroundColor = Color.black; //BLACK;
-		Color stopColor = Color.gray; //GRAY;
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-
 		// remove the grow box by default
 		// users who want it back can call frame.setResizable(true)
 		setResizable(false);
 
-		pack(); // get insets. get more.
-		Insets insets = getInsets();
-
-		int windowW = Math.max(applet.width, PApplet.MIN_WINDOW_WIDTH) + insets.left
-				+ insets.right;
-		int windowH = Math.max(applet.height, PApplet.MIN_WINDOW_HEIGHT) + insets.top
-				+ insets.bottom;
-
-		setSize(windowW, windowH);
-		setLocation((screen.width - applet.width) / 2, (screen.height - applet.height) / 2);
-		setLayout(null);
-	
-			int usableWindowH = windowH - insets.top - insets.bottom;
 	}
 	
 	public void startFrame() {

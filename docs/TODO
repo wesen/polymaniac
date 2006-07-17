@@ -20,12 +20,14 @@ X reflection for registered apps
  - class loader
  X switches fuer main
 - default parameter
-- parameter introspection
+  - parameter introspection
 - size from 200x200
 - play midi file
 - quicktime recording
-- framerate for MidiApp
+X framerate for MidiApp
+   - erstmal nicht, das sollen die apps bitte selber machen
 - zoom for MidiApp
+   - noch kein problem
  
 - midi clock parsing
   - erstmal Live sequencer

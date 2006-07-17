@@ -1,5 +1,7 @@
  package bl0rg.vj;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.*;
@@ -120,6 +122,17 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	  midiHandler.eventOn(cc, channel);
 	}
 
+	public void resize(int x, int y) {
+		System.out.println("resize x y " + x + "x" + y);
+		super.resize(x, y);
+	}
+
+	public void resize(Dimension dim) {
+		System.out.println("resize dim");
+		super.resize(dim);
+	}
+
+
 	public void draw() {
 		 background(0);
 	}
@@ -141,6 +154,8 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	
 	public static void main(String args[]) {
 		printDisplayInformation();
+		
+		boolean present = false;
 		
 		String midiDeviceName = "MIDI Yoke NT:  3";
 		String appClassName = "bl0rg.vj.Polymaniac";
@@ -175,7 +190,10 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 				}
 			} else if (param.equals(ARGS_MIDI)) {
 				midiDeviceName = value;
+			}else if (param.equals(ARGS_PRESENT)) {
+	            present = true;
 			}
+
 			
 			argIndex++;
 		}
@@ -221,7 +239,17 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 			}
 		}
 		
-		PolymaniacMainFrame mainFrame = PolymaniacMainFrame.CreateMainFrame( app, displayDevice);
+		if (displayDevice == null) {
+			GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			displayDevice = environment.getDefaultScreenDevice();
+		}
+		
+		PolymaniacFrame mainFrame;
+	    if (present) {
+	    	mainFrame = new PolymaniacPresentFrame(app, displayDevice.getDefaultConfiguration());
+	    } else {
+	    	mainFrame = new PolymaniacMainFrame(app, displayDevice.getDefaultConfiguration());
+	    }
 		mainFrame.startFrame();
 		
 		// PolymaniacExternalFrame externalFrame = new PolymaniacExternalFrame(app);

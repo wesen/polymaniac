@@ -8,25 +8,26 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class PolymaniacMainFrame extends PolymaniacFrame {
-    public static PolymaniacMainFrame CreateMainFrame(PApplet applet, GraphicsDevice displayDevice) {
-		if (displayDevice == null) {
-			GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			displayDevice = environment.getDefaultScreenDevice();
-		}
-
-		PolymaniacMainFrame frame = new PolymaniacMainFrame(applet, displayDevice.getDefaultConfiguration());
-		applet.frame = frame;
-		
-		return frame;
-    }
-    
 	PolymaniacMainFrame(PApplet applet, GraphicsConfiguration configuration ) {
 		super(applet, configuration);
-		add(applet);
-
+		
+		pack(); // get insets. get more.
 		Insets insets = getInsets();
-		int windowW = Math.max(applet.width, PApplet.MIN_WINDOW_WIDTH) + insets.left + insets.right;
-		int windowH = Math.max(applet.height, PApplet.MIN_WINDOW_HEIGHT) + insets.top 	+ insets.bottom;
+
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
+		int windowW = Math.max(applet.width, PApplet.MIN_WINDOW_WIDTH) + insets.left
+				+ insets.right;
+		int windowH = Math.max(applet.height, PApplet.MIN_WINDOW_HEIGHT) + insets.top
+				+ insets.bottom;
+
+		setSize(windowW, windowH);
+		setLocation((screen.width - applet.width) / 2, (screen.height - applet.height) / 2);
+		setLayout(null);
+		
+		applet.frame = this;
+
+		add(applet);
 
 		int usableWindowH = windowH - insets.top - insets.bottom;
 		applet.setBounds((windowW - applet.width) / 2, insets.top

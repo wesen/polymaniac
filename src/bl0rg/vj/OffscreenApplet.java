@@ -1,5 +1,7 @@
 package bl0rg.vj;
 
+import java.awt.Dimension;
+
 import processing.core.*;
 
 public class OffscreenApplet extends PApplet {// extends MidiApp {
@@ -10,7 +12,7 @@ public class OffscreenApplet extends PApplet {// extends MidiApp {
 		init();
 		this.g = parentApplet.g;
 	}
-
+	
 	public void init() {
 	println("myApp init");
 
