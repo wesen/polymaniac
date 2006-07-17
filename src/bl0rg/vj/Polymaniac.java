@@ -129,7 +129,8 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 				baumReflection = new MidiAppReflection("BaumApp");
 				MidiApp baumApp = new BaumApp(this, midiHandler, baumReflection.getDefaultMappings());
 			//	addForegroundApp(new PixelRobotApp(this, midiHandler));
-				addForegroundApp(baumApp);
+				// addForegroundApp(baumApp);
+				addForegroundApp(new LineApp(this, midiHandler));
 				addBackgroundApp(new EyeApp(this, midiHandler));
 		//		addBackgroundApp(new CirclesApp(this, midiHandler));
 				//MidiApp baumApp = baumReflection.getClassInstance(this, midiHandler, baumReflection.getDefaultMappings());

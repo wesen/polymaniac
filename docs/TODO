@@ -33,6 +33,7 @@ X reflection for registered apps
   - parameter introspection
 - zoom for MidiApp
    - noch kein problem
+- alpha channel image blitting copying
 
 spaeter: 
 - midi clock parsing (geht nicht?)
