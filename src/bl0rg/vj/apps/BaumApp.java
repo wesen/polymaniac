@@ -4,7 +4,10 @@ import bl0rg.vj.*;
 import bl0rg.vj.midi.MidiHandler;
 import bl0rg.vj.reflection.MidiAppMapping;
 import bl0rg.vj.reflection.MidiAppNoteMapping;
+import bl0rg.vj.reflection.MidiAppParamNoteMapping;
 import processing.core.*;
+import promidi.Controller;
+import promidi.Note;
 import traer.physics.*;
 import traer.animation.*;
 
@@ -16,9 +19,22 @@ public class BaumApp extends MidiApp {
 
 	ParticleSystem physics;
 	Smoother3D centroid;
+	int nodeColor = 255;
 
 	public void keyReleased() {
 		addNode();
+	}
+	
+	public void parameterNodeColor(Controller controller) {
+		parameterNodeColor(controller.getValue() * 2);
+	}
+	
+	public void parameterNodeColor(Note note) {
+		parameterNodeColor(min(255, (note.getPitch() -60)* 25));
+	}
+	
+	public void parameterNodeColor(int color) {
+		nodeColor = color;
 	}
 	
 	public BaumApp(PApplet parent, MidiHandler midiHandler, MidiAppMapping[] mappings) {
@@ -31,10 +47,19 @@ public class BaumApp extends MidiApp {
 	
    public static MidiAppMapping[] getDefaultMappings() {
 		return new MidiAppMapping[] { 
-				new MidiAppNoteMapping("addNode", "", MidiHandler.MIDI_DRUM_CHANNEL, -1),
-				new MidiAppNoteMapping("initialize", "", MidiHandler.MIDI_BASS_CHANNEL, -1) };
+				new MidiAppNoteMapping("eventAddNode", "", MidiHandler.MIDI_DRUM_CHANNEL, -1),
+				new MidiAppParamNoteMapping("parameterNodeColor", MidiHandler.MIDI_BASS_CHANNEL, -1),
+				new MidiAppNoteMapping("eventInitialize", "", MidiHandler.MIDI_BASS_CHANNEL, -1) };
    }
 
+   public void eventAddNode() {
+	   addNode();
+   }
+   
+   public void eventInitialize() {
+	   initialize();
+   }
+   
 	public synchronized void draw() {
 		ellipseMode(CENTER);
 		// println("physics draw");
@@ -70,7 +95,7 @@ public class BaumApp extends MidiApp {
 //		}
 //		endShape();
 
-		fill(255);
+		fill(nodeColor);
 		noStroke();
 		for (int i = 0; i < physics.numberOfParticles(); ++i) {
 			// check if i has not modified itself due to event from midi

@@ -47,7 +47,8 @@ public class EyeApp extends MidiApp {
 		}
 
 	public synchronized void draw() {
-		  e1.display();
+		   noStroke();
+				  e1.display();
 		  e2.display();
 		  e3.display();
 		  e4.display();
@@ -75,8 +76,7 @@ public class EyeApp extends MidiApp {
 		
    public void setup() {
 	   // size(pare, 200);
-	   smooth();
-	   noStroke();
+//	   smooth();
 	   e1 = new Eye( 50,  16,  80);
 	   e2 = new Eye( 64,  85,  40);  
 	   e3 = new Eye( 90, 200, 120);

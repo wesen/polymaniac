@@ -49,6 +49,10 @@ public class MidiAppReflection {
 		return midiAppClass.getName();
 	}
 	
+	public String[] getParameters() {
+		return null;
+	}
+	
 	public String[] getEventMethods() {
 		ArrayList methodList = new ArrayList();
 		Method [] methods = midiAppClass.getMethods();
@@ -58,7 +62,11 @@ public class MidiAppReflection {
 				methodList.add(name);
 			}
 		}
-		return (String[])methodList.toArray();
+		String []methodsArray = new String[methodList.size()];
+		for (int i = 0; i < methodsArray.length; i++) {
+			methodsArray[i] = (String)methodList.get(i);
+		}
+		return methodsArray;
 	}
 	
 	public String[] getParamMethods() {
@@ -66,11 +74,15 @@ public class MidiAppReflection {
 		Method [] methods = midiAppClass.getMethods();
 		for (int i = 0; i < methods.length; i++) {
 			String name = methods[i].getName();
-			if (name.startsWith("param")) {
+			if (name.startsWith("parameter")) {
 				methodList.add(name);
 			}
 		}
-		return (String[])methodList.toArray();
+		String []methodsArray = new String[methodList.size()];
+		for (int i = 0; i < methodsArray.length; i++) {
+			methodsArray[i] = (String)methodList.get(i);
+		}
+		return methodsArray;
 	}
 	
 	public MidiApp getClassInstance(PApplet parent, MidiHandler midiHandler, MidiAppMapping mappings[]) {

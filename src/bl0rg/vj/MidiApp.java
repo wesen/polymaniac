@@ -13,7 +13,7 @@ public class MidiApp extends OffscreenApplet {
 	  public static MidiAppMapping[] getDefaultMappings() {
 		  return new MidiAppMapping[] {};
 	  }
-	  
+	 
 	  public MidiApp(PApplet parent) {
 		  super(parent);
 	  }

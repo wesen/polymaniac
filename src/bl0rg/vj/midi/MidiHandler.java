@@ -184,7 +184,7 @@ public class MidiHandler {
 		}
 		if ((channel < noteParamEventList.length) && (channel >= 0)) {
 			for (int i = 0; i < noteParamEventList[channel].size(); i++) {
-				NoteCallback callback = (NoteCallback) noteParamEventList[channel].get(i);
+				NoteParamCallback callback = (NoteParamCallback) noteParamEventList[channel].get(i);
 	//			      System.out.println("found note param callback " + callback);
 				callback.eventOn(note);
 			}

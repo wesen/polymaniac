@@ -128,10 +128,10 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 			  	MidiAppReflection baumReflection;
 				baumReflection = new MidiAppReflection("BaumApp");
 				MidiApp baumApp = new BaumApp(this, midiHandler, baumReflection.getDefaultMappings());
-				addForegroundApp(new PixelRobotApp(this, midiHandler));
+			//	addForegroundApp(new PixelRobotApp(this, midiHandler));
 				addForegroundApp(baumApp);
-				// addBackgroundApp(new EyeApp(this, midiHandler));
-				addBackgroundApp(new CirclesApp(this, midiHandler));
+				addBackgroundApp(new EyeApp(this, midiHandler));
+		//		addBackgroundApp(new CirclesApp(this, midiHandler));
 				//MidiApp baumApp = baumReflection.getClassInstance(this, midiHandler, baumReflection.getDefaultMappings());
 				//addForegroundApp(new BaumApp(baumApp, midiHandler, baumReflection.getDefaultMappings()));
 			} catch (ClassNotFoundException e) {
@@ -229,6 +229,16 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 			System.out.println("mappings for " + midiApp.getName());
 			for (int j = 0; j < mappings.length; j++) {
 				System.out.println("\t" + mappings[j].toString());
+			}
+			String [] methods = midiApp.getEventMethods();
+			System.out.println("event methods for " + midiApp.getName());
+			for (int j = 0; j < methods.length; j++) {
+				System.out.println("\t" + methods[j]);
+			}
+			methods = midiApp.getParamMethods();
+			System.out.println("param methods for " + midiApp.getName());
+			for (int j = 0; j < methods.length; j++) {
+				System.out.println("\t" + methods[j]);
 			}
 		}
 		
