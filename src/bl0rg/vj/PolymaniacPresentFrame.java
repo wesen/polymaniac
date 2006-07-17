@@ -12,6 +12,8 @@ import java.awt.event.MouseEvent;
 import processing.core.PApplet;
 
 public class PolymaniacPresentFrame extends PolymaniacFrame {
+	Label label;
+	
 	PolymaniacPresentFrame(PApplet applet, GraphicsConfiguration configuration ) {
 		super(applet, configuration);
 	    
@@ -32,13 +34,8 @@ public class PolymaniacPresentFrame extends PolymaniacFrame {
 
         /* No Stop button  why size is all when bla?? */
 
-        Label label = new Label("");
+        label = new Label("");
         label.setForeground(stopColor);
-        label.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-              System.exit(0);
-            }
-          });
         add(label);
 
         /*
@@ -54,6 +51,12 @@ public class PolymaniacPresentFrame extends PolymaniacFrame {
 	
 	public void startFrame() {
 		super.startFrame();
-		applet.requestFocus(); // ask for keydowns
+		label.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+            	applet.stop();
+              System.exit(0);
+            }
+          });
+        applet.requestFocus(); // ask for keydowns
 	}
 }

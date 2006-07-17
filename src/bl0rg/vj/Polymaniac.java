@@ -26,6 +26,7 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	ArrayList foregroundApps = new ArrayList();
 	String midiDeviceName = "MIDI Yoke NT:  3";
 	Component mirrorComponent;
+	PolymaniacFrame mainFrame = null;
 	
 	public void clearApps(ArrayList appList) {
 		for (Iterator i = appList.iterator(); i.hasNext();) {
@@ -62,12 +63,37 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 
 	//	 press "s" to unload midi
 	public void keyReleased() {
+		if (key == 'f') {
+			if (mainFrame != null) {
+				if (mainFrame.getClass().getName().equals("bl0rg.vj.PolymaniacMainFrame")) {
+					switchToPresentMode();
+				} else if (mainFrame.getClass().getName().equals("bl0rg.vj.PolymaniacPresentFrame")) {
+					switchToMainMode();
+				}
+			}
+		}
 		/* Workaround not needed anymore
 		 if (key == 's') {
 			println("closing midi inputs");
 			midiHandler.close();
 		}
 		*/
+	}
+	
+	public void switchToPresentMode() {
+		PolymaniacFrame frame = new PolymaniacPresentFrame(this, mainFrame.getGraphicsConfiguration());
+		mainFrame.setEnabled(false);
+		mainFrame.setVisible(false);
+		frame.startFrame();
+		mainFrame = frame;
+	}
+	
+	public void switchToMainMode() {
+		PolymaniacFrame frame = new PolymaniacMainFrame(this, mainFrame.getGraphicsConfiguration());
+		mainFrame.setEnabled(false);
+		mainFrame.setVisible(false);
+		frame.startFrame();
+		mainFrame = frame;
 	}
 	
 	synchronized public void handleDisplay() {
@@ -121,17 +147,6 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	public void noteOn(Controller cc, int deviceNumber, int channel) {
 	  midiHandler.eventOn(cc, channel);
 	}
-
-	public void resize(int x, int y) {
-		System.out.println("resize x y " + x + "x" + y);
-		super.resize(x, y);
-	}
-
-	public void resize(Dimension dim) {
-		System.out.println("resize dim");
-		super.resize(dim);
-	}
-
 
 	public void draw() {
 		 background(0);
@@ -250,7 +265,9 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	    } else {
 	    	mainFrame = new PolymaniacMainFrame(app, displayDevice.getDefaultConfiguration());
 	    }
+	    app.mainFrame = mainFrame;
 		mainFrame.startFrame();
+		
 		
 		// PolymaniacExternalFrame externalFrame = new PolymaniacExternalFrame(app);
 		//	 externalFrame.startFrame();
