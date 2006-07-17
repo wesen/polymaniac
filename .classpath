@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/manuel/My Documents/promidi.jar"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/manuel/My Documents/processing-0115/lib/core.jar"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/manuel/My Documents/processing-0115/libraries/physics/library/physics.jar"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/manuel/My Documents/processing-0115/libraries/animation/library/animation.jar"/>
+	<classpathentry kind="lib" path="jars/animation.jar"/>
+	<classpathentry kind="lib" path="jars/core.jar"/>
+	<classpathentry kind="lib" path="jars/physics.jar"/>
+	<classpathentry kind="lib" path="jars/promidi.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
