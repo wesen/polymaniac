@@ -1,11 +1,15 @@
 package bl0rg.vj;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.image.DirectColorModel;
 
 import processing.core.*;
 
 public class OffscreenApplet extends PApplet {// extends MidiApp {
 	PApplet parentApplet;
+	boolean buffered;
+	PGraphics oldG;
 
 	OffscreenApplet(PApplet parentApplet) {
 		this.parentApplet = parentApplet;
@@ -13,8 +17,30 @@ public class OffscreenApplet extends PApplet {// extends MidiApp {
 		this.g = parentApplet.g;
 	}
 	
+	public void setBuffered(boolean buffered) {
+		this.buffered = buffered;
+		if (buffered) {
+			try {
+				g = null;
+				size(parentApplet.width, parentApplet.height, JAVA2D); // , JAVA2D);
+				g.backgroundColor = 0;
+			} catch (RuntimeException e) {
+				setup();
+				System.out.println("runtime, call setup");
+			}
+		}
+	}
+
+	public void size(int iwidth, int iheight, String irenderer, String ipath) {
+		if (buffered)
+			super.size(iwidth, iheight, irenderer, ipath);
+		else
+			System.out.println("You can't use size in a MidiApp, this call has no effect");
+	  }
+	  
+
 	public void init() {
-	println("myApp init");
+		println(getClass().getName() + " init");
 
 		finished = false;
 
@@ -37,8 +63,8 @@ public class OffscreenApplet extends PApplet {// extends MidiApp {
 		} catch (Exception e) {
 		} // may be a security problem
 
-		size(parentApplet.width, parentApplet.height);
-		println("size " + parentApplet.width + " x " + parentApplet.height);
+	//	size(parentApplet.width, parentApplet.height);
+	//	println("size " + parentApplet.width + " x " + parentApplet.height);
 		// start() ??
 	}
 
@@ -105,11 +131,18 @@ public class OffscreenApplet extends PApplet {// extends MidiApp {
 				drawMethods.handle();
 
 				redraw = false; // unset 'redraw' flag in case it was set
-
 			}
 			g.endFrame();
 			frameCount++;
 			postMethods.handle();
+			
+			if (buffered) {
+				//parentApplet.g.beginFrame();
+				((PGraphics2)parentApplet.g).g2.drawImage(((PGraphics2)g).image, 0, 0,null);
+				// ((PGraphics2)parentApplet.g).blitPGraphics2((PGraphics2)g);
+				// parentApplet.image(get(), 0, 0);
+				//parentApplet.g.endFrame();
+			}
 		}
 	}
 

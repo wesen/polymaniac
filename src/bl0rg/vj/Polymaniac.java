@@ -98,16 +98,15 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	
 	synchronized public void handleDisplay() {
 		super.handleDisplay();
-		
-		for (int i = 0; i < backgroundApps.size(); i++) {
+
+			for (int i = 0; i < backgroundApps.size(); i++) {
 			MidiApp app = (MidiApp)backgroundApps.get(i);
 			app.handleDisplay();
 		}
 		for (int i = 0; i < foregroundApps.size(); i++) {
 			MidiApp app = (MidiApp)foregroundApps.get(i);
 			app.handleDisplay();
-		}
-		
+		}	
 	}
 
 
@@ -118,7 +117,7 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	
 	public void setup() 
 	{
-		  size(320, 240, P3D);
+		  size(320, 240, JAVA2D);
 	//	  smooth();
 		  framerate(30);
 
@@ -127,12 +126,12 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 		  try {
 			  	MidiAppReflection baumReflection;
 				baumReflection = new MidiAppReflection("BaumApp");
-				MidiApp baumApp = new BaumApp(this, midiHandler, baumReflection.getDefaultMappings());
-			//	addForegroundApp(new PixelRobotApp(this, midiHandler));
-				// addForegroundApp(baumApp);
+				 addForegroundApp(new PixelRobotApp(this, midiHandler));
 				addForegroundApp(new LineApp(this, midiHandler));
 				addBackgroundApp(new EyeApp(this, midiHandler));
-		//		addBackgroundApp(new CirclesApp(this, midiHandler));
+				 MidiApp baumApp = new BaumApp(this, midiHandler, baumReflection.getDefaultMappings());
+					addForegroundApp(baumApp);
+				//addBackgroundApp(new CirclesApp(this, midiHandler));
 				//MidiApp baumApp = baumReflection.getClassInstance(this, midiHandler, baumReflection.getDefaultMappings());
 				//addForegroundApp(new BaumApp(baumApp, midiHandler, baumReflection.getDefaultMappings()));
 			} catch (ClassNotFoundException e) {
@@ -151,6 +150,9 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 
 	public void draw() {
 		 background(0);
+		// fill(0, 255, 0);
+		// rect(0, 0, 100, 100);
+	//	ellipse(50, 50, 30, 30);
 	}
 		
 	public static void printDisplayInformation() {

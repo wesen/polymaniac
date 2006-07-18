@@ -4,7 +4,11 @@
 
 package bl0rg.vj.apps;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 import processing.core.PApplet;
+import processing.core.PGraphics2;
 import bl0rg.vj.MidiApp;
 import bl0rg.vj.midi.*;
 import bl0rg.vj.reflection.MidiAppMapping;
@@ -58,21 +62,39 @@ public class LineApp extends MidiApp {
 			part[i]=new Particle();
 			part[i].col=i%colNum;
 		}
+		
+		// colorMode(255, 255, 255, 0);
+		setBuffered(true);
 	}
 	
 	public synchronized void draw() {
 		rectMode(CENTER_RADIUS);
 		ellipseMode(CENTER);
+		smooth();
 		
-//		if(doSetBackground) {
+	 if (doSetBackground) {
+		  background(0, 0, 0 , 0);
 //			background(colors[colBG][0],
 //					colors[colBG][1],
 //					colors[colBG][2]);
-//			doSetBackground=false;
-//		}
-//		
-		noStroke();
+		doSetBackground=false;
+		}
+	 
+	  	noStroke();
 		for(int i=0; i<num; i++) part[i].update();
+		
+		
+		/*
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics myG = image.getGraphics();
+		myG.setColor(new Color(255, 0, 0, 255));
+		myG.fillRect(0, 0, width, height);
+		myG.setColor(new Color(255, 0, 255, 0));
+		myG.fillRect(0, 0, width, height);
+		((PGraphics2)g).g2.drawImage(image, 0, 0, null);
+	*/
+		
+		// colorMode(255, 255, 255, 255);
 		
 		
 //		if(doSaveFrame) {
@@ -148,7 +170,7 @@ public class LineApp extends MidiApp {
 			col=((int)random(10000))%(colNum-1)+1;
 			
 			initState(CIRCLE);    
-			if(random(100)<90) rad=2;
+			if(random(100)<90) rad=4;
 			else rad=(int)(8+random(5));
 		}
 		
@@ -168,13 +190,13 @@ public class LineApp extends MidiApp {
 				vOld.set(v);
 			}
 			noFill();
-			fill(colors[col][0],colors[col][1],colors[col][2]);
+			fill(colors[col][0],colors[col][1],colors[col][2], 255);
 			ellipse(v.x,v.y, rad,rad);//3,3);
 //			line(vOld.x,vOld.y,v.x,v.y);//, 2,2);
 			
 			if(cnt%100==0) {
 				noFill();
-				fill(colors[col][0],colors[col][1],colors[col][2]);
+				fill(colors[col][0],colors[col][1],colors[col][2], 255);
 				ellipse(v.x,v.y, rad,rad);
 			}
 			

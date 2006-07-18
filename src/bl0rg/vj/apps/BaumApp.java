@@ -48,7 +48,7 @@ public class BaumApp extends MidiApp {
    public static MidiAppMapping[] getDefaultMappings() {
 		return new MidiAppMapping[] { 
 				new MidiAppNoteMapping("eventAddNode", "", MidiHandler.MIDI_DRUM_CHANNEL, -1),
-				new MidiAppParamNoteMapping("parameterNodeColor", MidiHandler.MIDI_BASS_CHANNEL, -1),
+	//			new MidiAppParamNoteMapping("parameterNodeColor", MidiHandler.MIDI_BASS_CHANNEL, -1),
 				new MidiAppNoteMapping("eventInitialize", "", MidiHandler.MIDI_BASS_CHANNEL, -1) };
    }
 

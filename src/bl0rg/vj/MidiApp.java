@@ -22,10 +22,6 @@ public class MidiApp extends OffscreenApplet {
 		  midiHandler = midiHandler;
 	  }
 	  
-	  public void size(int iwidth, int iheight, String irenderer, String ipath) {
-		  System.out.println("You can't use size in a MidiApp, this call has no effect");
-	  }
-	  
 	  public MidiApp(PApplet parent, MidiHandler midiHandler, MidiAppMapping mappings[]) {
 		  this(parent, midiHandler);
 		  for (int i = 0; i < mappings.length; i++) {

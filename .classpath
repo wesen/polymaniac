@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="jars/animation.jar"/>
-	<classpathentry kind="lib" path="jars/core.jar"/>
+	<classpathentry sourcepath="jars/core.jar" kind="lib" path="jars/core.jar"/>
 	<classpathentry kind="lib" path="jars/physics.jar"/>
 	<classpathentry kind="lib" path="jars/promidi.jar"/>
 	<classpathentry kind="output" path="bin"/>
