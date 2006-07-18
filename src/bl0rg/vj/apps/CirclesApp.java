@@ -66,6 +66,8 @@ public class CirclesApp extends MidiApp {
 	    if (random(100)<50) bt=-1;
 	    discs[i] = new Disc(i,x,y,bt*fx/1000.0f,bt*fy/1000.0f,r);
 	  }
+		setBuffered(true, P3D);
+
 	}
 
 //	 main

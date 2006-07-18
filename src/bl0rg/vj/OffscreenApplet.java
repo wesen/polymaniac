@@ -18,11 +18,15 @@ public class OffscreenApplet extends PApplet {// extends MidiApp {
 	}
 	
 	public void setBuffered(boolean buffered) {
+		setBuffered(buffered, JAVA2D);
+	}
+	
+	public void setBuffered(boolean buffered, String iRenderer) {
 		this.buffered = buffered;
 		if (buffered) {
 			try {
 				g = null;
-				size(parentApplet.width, parentApplet.height, JAVA2D); // , JAVA2D);
+				size(parentApplet.width, parentApplet.height, iRenderer);
 				g.backgroundColor = 0;
 			} catch (RuntimeException e) {
 				setup();
@@ -138,8 +142,8 @@ public class OffscreenApplet extends PApplet {// extends MidiApp {
 			
 			if (buffered) {
 				//parentApplet.g.beginFrame();
-				((PGraphics2)parentApplet.g).g2.drawImage(((PGraphics2)g).image, 0, 0,null);
-				// ((PGraphics2)parentApplet.g).blitPGraphics2((PGraphics2)g);
+				// ((PGraphics)parentApplet.g).g2.drawImage(((PGraphics2)g).image, 0, 0,null);
+				parentApplet.g.blitPGraphics(g);
 				// parentApplet.image(get(), 0, 0);
 				//parentApplet.g.endFrame();
 			}
