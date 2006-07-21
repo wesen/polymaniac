@@ -1,0 +1,73 @@
+I wanted to have some sort of visuals going on for my next gig (which will be detroit-like techno improvisation 
+and maybe chillout-dub stuff at http://freiraumkultur.net ), searched a bit on the net and found all those
+beautiful processing sketches, which I could modify to sync to the MIDI coming out of my sequencer. This blog 
+posting will be a bit chaotic like all my posts, and sprinkled with code, but the main point is: I can load multiple 
+PApplets, sync them to the incoming MIDI in a simple way, and control everything out of the Ableton Live applicaiton
+I use to play my music. You can basically take most processing sketches off the web, modify them slightly, and
+run them in the VJ application. You can get the code at svn co svn://bl0rg.net/processing , or the (debug version) at
+http://bl0rg.net/~manuel/polymaniac.tar.gz (run with java -jar Polymaniac.jar --standalone). This is a kind of alpha 
+release, it has not been tested really, but I will
+in the next few days, and keep updating blog postings, and it'll have to work until the 5th august anyway. The posting is
+now about how the application's internals, and a kind of reference for me as I keep forgetting everything.
+When you start the application using the --standalone switch, you can use the keyboard keys (qwerty layout) to trigger
+midi events. Top row is DRUM notes, middle row is BASS notes, lower row is EVENT notes). A few test applets are loaded, but
+peek inside the setup() method of Polymaniac.java to load your own. I'll add a dynamic ClassLoader in the next few days.
+You can switch to fullscreen using "f".
+
+I first started to modify simple sketches, adding promidi support, but this quickly turned into a bigger endeavour 
+as I started to refactor code and make abstractions and stuff. The application is now called Polymaniac and is a standalone 
+application (not started from the PDE). I quickly switched
+over from PDE to eclipse for my development. The goal of Polymaniac is to be able to load existing sketches, and run
+multiple instances of them (either on top of each other, or as background, etc...). Furthermore, specific methods
+out of those sketches can be controlled by MIDI (either using MIDI notes or MIDI controller data).
+
+So for example you can write:
+
+MidiApp baumApp = new BaumApp(this, midiHandler, baumReflection.getDefaultMappings());
+addForegroundApp(baumApp);
+midiHandler.registerMidiAppNote(baumApp, "addNode", "removeNode", MidiHandler.MIDI_SYNTH_CHANNEL);
+
+to create a sketch from the class BaumApp (a straight version of traer's physics examples), add it as a foreground 
+application (drawn on top of background applications), and map the method "addNode" of the newly created app
+to any NOTE ON event on the midi synth channel (hardwired for my needs), and the "removeNode" to corresponding
+NOTE OFF method. So playing a note will create a new node, and remove a node when the note stops.
+
+I started by hardwiring all the MIDImethods, but now I have a central hub (called MidiHandler) distributing incoming
+ events to registered
+sketches. You can use java reflection to set up all this dynamically, and my going goal for the next version of
+Polymaniac is to add a GUI with MIDI learn functionality (tweak a knob, click a sketch parameter, the parameter is now
+assigned).
+
+The most complicated thing about Polymaniac is actually how the usual order of events of a processing sketch is modified.
+For now only applets using draw() are supported, and there may still be weirdo things going with certain renderings 
+(I have just tested a few sketches). The main application class Polymaniac is actually an instance of PApplet. It creates
+an instance of MidiHandler to handle incoming midi notes, and sets up just like a normal sketch by calling setup(). However,
+it keeps a list of foreground and background apps, which are instances of MidiApp and kept in the package bl0rg.vj.apps.
+MidiApp is a special version of a PApplet. It draws offscreen. Actually, a MidiApp uses the PGraphics context of the polymaniac
+application to draw. However, this may not be desired in certain cases in which the sketch depends on the screen not being 
+redrawn (for example particles leaving trails). In this case, we must create a special PGraphics for the class, and copy the frame
+of the MidiApp on top of the main frame of Polymaniac. This is done by calling setBuffered(true). This is used in the demo
+LineApp for example, taking from processing.unlekker.net . setBuffered(true, RENDERER) may also be used to switch the renderer.
+The main Polymaniac renderer has to be JAVA2D for now, but you can add P3D applets (like for examples CirclesApp).
+
+Setting up parameters works by either modifiying the default mappings of classes at their instantiation, like for example
+
+MidiApp baumApp = new BaumApp(this, midiHandler, new MidiAppMapping[] { 
+				new MidiAppNoteMapping("blabla", "", MidiHandler.MIDI_DRUM_CHANNEL, -1),
+				new MidiAppNoteMapping("blabla", "", MidiHandler.MIDI_BASS_CHANNEL, -1) });
+				
+which will create baumApp with mapping blabla() to notes on the drum channel and the bass channel. Or later on by calling
+one of MidiHandler.midiRegister methods. I defined 4 channels on the midi device, but you can pretty easily change this (I'll
+add switches and configuration parameters for that for the first real release). This way, you can use midi clips in ableton to 
+specifically trigger visual stuff (using the MIDI_EVENT_CHANNEL), or by using the running midi clips (drums, etc...) to modify 
+special parameters. For example, each bass drum kick can switch the visible MidiApp, so you can have short subliminal animation
+frames on the beat. A lot of cool things are possible this way, I haven't began to really think about it, but the first impressions
+were awesome.
+
+You may have noticed that this comes with its own version of processing.core, that's because I had to modify the existing 
+renderers to be able to render a transparent backgorund, in case a buffered MidiApp wants to only add foreground elements. I
+had to modify the colorspace of the P3D model, and to add real transparent backgorund drawing in JAVA2D. I also added a quick
+blit function for offscreen MidiApps in the JAVA2D renderer. Didn't implement it in P3D yet.
+
+Another thing which doesn't work yet is looping processing apps (not frame based), I'd have to start a new thread for each added
+applet, so that will be added in the next few days too.

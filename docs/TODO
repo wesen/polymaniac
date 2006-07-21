@@ -25,6 +25,11 @@ X size from 200x200
 
 - zoom for MidiApp
   - ist problem wenn baumapp als erste vordergrund app da vor lines rumzeichnet
+  
+- json scene beschreibung und so
+- class loader
+  - subclass PApplet so that you can take plain PApplets
+- default parameter
 
 X alpha channel image blitting copying
   X bitte auch fuer P3d, da scheint das nicht zu tun mit den farben und so, wenn das directcolormodel rummacht
@@ -32,9 +37,6 @@ X alpha channel image blitting copying
 X reflection for registered apps
    X mapping iterators?? toArray();
    - access static fields for info and stuff, defualt mappings, etc... or else static methods but that's ncool
-- class loader
-  - subclass PApplet so that you can take plain PApplets
-- default parameter
   X parameter midi mapping
   X parameter introspection
 

@@ -12,7 +12,7 @@ public class GeruestApp extends MidiApp {
 	}
 	
 	public GeruestApp(PApplet parent, MidiHandler midiHandler) {
-		super(parent, midiHandler, GeruestApp.getDefaultMappings());
+		this(parent, midiHandler, GeruestApp.getDefaultMappings());
 	}
 	
    public static MidiAppMapping[] getDefaultMappings() {
@@ -24,4 +24,7 @@ public class GeruestApp extends MidiApp {
 	public synchronized void draw() {
 	}
 
+	public synchronized void setup() {
+		
+	}
 }

@@ -19,7 +19,7 @@ public class BaumApp extends MidiApp {
 
 	ParticleSystem physics;
 	Smoother3D centroid;
-	int nodeColor = 255;
+	int nodeColor = 162;
 
 	public void keyReleased() {
 		addNode();

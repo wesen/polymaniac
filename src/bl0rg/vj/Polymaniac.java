@@ -101,11 +101,13 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 
 			for (int i = 0; i < backgroundApps.size(); i++) {
 			MidiApp app = (MidiApp)backgroundApps.get(i);
-			app.handleDisplay();
+			if (app.isVisible())
+				app.handleDisplay();
 		}
 		for (int i = 0; i < foregroundApps.size(); i++) {
 			MidiApp app = (MidiApp)foregroundApps.get(i);
-			app.handleDisplay();
+			if (app.isVisible())
+				app.handleDisplay();
 		}	
 	}
 
@@ -127,13 +129,14 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 			  	MidiAppReflection baumReflection;
 				baumReflection = new MidiAppReflection("BaumApp");
 				 addForegroundApp(new PixelRobotApp(this, midiHandler));
-				addForegroundApp(new LineApp(this, midiHandler));
-				//addBackgroundApp(new EyeApp(this, midiHandler));
+			//	addForegroundApp(new LineApp(this, midiHandler));
+			//	addBackgroundApp(new EyeApp(this, midiHandler));
 				 MidiApp baumApp = new BaumApp(this, midiHandler, baumReflection.getDefaultMappings());
-					addForegroundApp(baumApp);
+				//	addForegroundApp(baumApp);
 				addBackgroundApp(new CirclesApp(this, midiHandler));
 				//MidiApp baumApp = baumReflection.getClassInstance(this, midiHandler, baumReflection.getDefaultMappings());
 				//addForegroundApp(new BaumApp(baumApp, midiHandler, baumReflection.getDefaultMappings()));
+				// midiHandler.registerMidiAppNote(baumApp, "addNode", "removeNode", MidiHandler.MIDI_SYNTH_CHANNEL);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				System.out.println("Could not find baumapp class");

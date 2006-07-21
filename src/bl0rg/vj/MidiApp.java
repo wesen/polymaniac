@@ -9,6 +9,7 @@ import processing.core.PApplet;
 public class MidiApp extends OffscreenApplet {
 	  int drawOrder = 0;
 	  MidiHandler midiHandler;
+	  protected boolean visible = true;
 
 	  public static MidiAppMapping[] getDefaultMappings() {
 		  return new MidiAppMapping[] {};
@@ -38,15 +39,11 @@ public class MidiApp extends OffscreenApplet {
 	    this.drawOrder = drawOrder;
 	  }
 
-	  public synchronized void startApp() {
+	  public synchronized void setVisible(boolean visible) {
+		  this.visible = visible;
 	  }
-
-	  public synchronized void stopApp() {
-	  }
-
-	  public synchronized void showApp() {
-	  }
-
-	  public synchronized void hideApp() {
+	  
+	  public synchronized boolean isVisible() {
+		  return visible;
 	  }
 }
