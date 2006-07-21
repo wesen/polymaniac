@@ -37,6 +37,10 @@ public class BaumApp extends MidiApp {
 		nodeColor = color;
 	}
 	
+	public BaumApp(PApplet parent, MidiHandler midiHandler) {
+		this(parent, midiHandler, BaumApp.getDefaultMappings());
+	}
+	
 	public BaumApp(PApplet parent, MidiHandler midiHandler, MidiAppMapping[] mappings) {
 		super(parent, midiHandler, mappings);
 		physics = new ParticleSystem(0, 0.25f);

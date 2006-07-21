@@ -1,4 +1,4 @@
- package bl0rg.vj;
+ package bl0rg.vj.polymaniac;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -7,6 +7,8 @@ import java.awt.event.WindowEvent;
 import java.util.*;
 import java.util.List;
 
+import bl0rg.vj.ContainerApp;
+import bl0rg.vj.MidiApp;
 import bl0rg.vj.apps.*;
 import bl0rg.vj.midi.*;
 import bl0rg.vj.reflection.MidiAppMapping;
@@ -101,13 +103,25 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 
 			for (int i = 0; i < backgroundApps.size(); i++) {
 			MidiApp app = (MidiApp)backgroundApps.get(i);
-			if (app.isVisible())
+			if (app.isVisible()) {
+				if (!app.isBuffered()) {
+					app.g.defaults();
+					app.g.resetMatrix();
+				}
+				g.resetMatrix();
 				app.handleDisplay();
+			}
 		}
 		for (int i = 0; i < foregroundApps.size(); i++) {
 			MidiApp app = (MidiApp)foregroundApps.get(i);
-			if (app.isVisible())
+			if (app.isVisible()) {
+				if (!app.isBuffered()) {
+						app.g.defaults();
+						app.g.resetMatrix();
+				}
+				g.resetMatrix();
 				app.handleDisplay();
+			}
 		}	
 	}
 
@@ -125,22 +139,29 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 
 		  createMidiHandler();
 		  
-		  try {
-			  	MidiAppReflection baumReflection;
-				baumReflection = new MidiAppReflection("BaumApp");
-				 addForegroundApp(new PixelRobotApp(this, midiHandler));
+//		  try {
+			  ContainerApp container = new ContainerApp(this, midiHandler,
+					  new MidiApp[] { new BaumApp(this, midiHandler),
+					                            new LineApp(this, midiHandler) },
+					   new MidiApp[] { new CirclesApp(this, midiHandler),
+					                            new EyeApp(this, midiHandler) });
+			  addBackgroundApp(container);
+					  
+//			  	MidiAppReflection baumReflection;
+//				baumReflection = new MidiAppReflection("BaumApp");
+//				 addForegroundApp(new PixelRobotApp(this, midiHandler));
 			//	addForegroundApp(new LineApp(this, midiHandler));
 			//	addBackgroundApp(new EyeApp(this, midiHandler));
-				 MidiApp baumApp = new BaumApp(this, midiHandler, baumReflection.getDefaultMappings());
+//				 MidiApp baumApp = new BaumApp(this, midiHandler, baumReflection.getDefaultMappings());
 				//	addForegroundApp(baumApp);
-				addBackgroundApp(new CirclesApp(this, midiHandler));
+//				addBackgroundApp(new CirclesApp(this, midiHandler));
 				//MidiApp baumApp = baumReflection.getClassInstance(this, midiHandler, baumReflection.getDefaultMappings());
 				//addForegroundApp(new BaumApp(baumApp, midiHandler, baumReflection.getDefaultMappings()));
 				// midiHandler.registerMidiAppNote(baumApp, "addNode", "removeNode", MidiHandler.MIDI_SYNTH_CHANNEL);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				System.out.println("Could not find baumapp class");
-			}
+//			} catch (ClassNotFoundException e) {
+//				e.printStackTrace();
+//				System.out.println("Could not find baumapp class");
+//			}
 	}
 
 	public void noteOn(Note note, int deviceNumber, int channel) {

@@ -21,6 +21,10 @@ public class OffscreenApplet extends PApplet {// extends MidiApp {
 		setBuffered(buffered, JAVA2D);
 	}
 	
+	public boolean isBuffered() {
+		return buffered;
+	}
+	
 	public void setBuffered(boolean buffered, String iRenderer) {
 		this.buffered = buffered;
 		if (buffered) {

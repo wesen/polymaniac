@@ -1,4 +1,4 @@
-package bl0rg.vj;
+package bl0rg.vj.polymaniac;
 
 import java.awt.Color;
 import java.awt.Dimension;

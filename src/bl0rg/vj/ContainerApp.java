@@ -33,16 +33,75 @@ public class ContainerApp extends MidiApp {
 	public synchronized void handleDisplay() {
 		for (int i = 0; i < bgApps.size(); i++) {
 			MidiApp app = (MidiApp)bgApps.get(i);
-			if (app.isVisible())
+			if (app.isVisible()) {
+				if (!app.isBuffered()) {
+					app.g.defaults();
+					app.g.resetMatrix();
+				}
+				g.resetMatrix();
 				app.handleDisplay();
+			}
 		}
 		for (int i = 0; i < fgApps.size(); i++) {
 			MidiApp app = (MidiApp)fgApps.get(i);
-			if (app.isVisible())
+			if (app.isVisible()) {
+				if (!app.isBuffered()) {
+					app.g.defaults();
+					app.g.resetMatrix();
+				}
+				g.resetMatrix();
 				app.handleDisplay();
+			}
 		}
 	}
-
+	
+	public void setVisibleApps(ArrayList apps, boolean visible) {
+		for (int i = 0; i < apps.size(); i++) {
+			MidiApp app = (MidiApp)apps.get(i);
+			app.setVisible(false);
+		}
+	}
+	
+	public synchronized void eventHideFGApps() {
+		setVisibleApps(fgApps, false);
+	}
+	
+	public synchronized void eventShowFGApps() {
+		setVisibleApps(fgApps, true);
+	}
+	
+	public synchronized void eventHideBGApps() {
+		setVisibleApps(bgApps, false);
+	}
+	
+	public synchronized void eventShowBGApps() {
+		setVisibleApps(bgApps, true);
+	}
+	
+	public void switchApps(MidiApp visibleApps[], MidiApp hiddenApps[]) {
+		if (visibleApps.length >= 1) {
+			visibleApps[0].setVisible(false);
+		}
+		if (hiddenApps.length >= 1) {
+			hiddenApps[0].setVisible(true);
+		}
+	}
+	
+	public synchronized void eventSwitchFGApp() {
+		// assumes there are 2 fgapps, one visible, one hidden
+		switchApps(getVisibleFGApps(), getHiddenFGApps());
+	}
+	
+	public synchronized void eventSwitchBGApp() {
+		// assumes there are 2 fgapps, one visible, one hidden
+		switchApps(getVisibleBGApps(), getHiddenBGApps());
+	}
+	
+	public synchronized void eventSwitchApps() {
+		eventSwitchBGApp();
+		eventSwitchFGApp();
+	}
+	
 	protected MidiApp[] getApps(ArrayList appList, boolean visible) {
 		ArrayList visibleApps = new ArrayList();
 		for (int i = 0; i < appList.size(); i++) {

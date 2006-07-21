@@ -1,10 +1,13 @@
-package bl0rg.vj;
+package bl0rg.vj.polymaniac;
 
+import bl0rg.vj.*;
 import processing.core.*;
 import java.applet.Applet;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Graphics;
+
+import bl0rg.vj.DelegateComponent;
 
 public class PolymaniacExternalFrame extends PolymaniacFrame implements Runnable {
 	DelegateComponent component;

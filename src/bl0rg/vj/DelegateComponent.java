@@ -12,7 +12,7 @@ public class DelegateComponent extends Component implements Runnable {
 	Component realOne;
 	Thread t;
 	
-	DelegateComponent(Component realOne) {
+	public DelegateComponent(Component realOne) {
 		super();
 		this.realOne = realOne;
 		Rectangle bounds = realOne.getBounds();
