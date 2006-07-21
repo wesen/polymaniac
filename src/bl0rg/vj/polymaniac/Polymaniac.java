@@ -27,7 +27,6 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	ArrayList backgroundApps = new ArrayList();
 	ArrayList foregroundApps = new ArrayList();
 	String midiDeviceName = "MIDI Yoke NT:  3";
-	Component mirrorComponent;
 	PolymaniacFrame mainFrame = null;
 	
 	public void clearApps(ArrayList appList) {
@@ -59,10 +58,6 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 		foregroundApps.add(app);
 	}
 	
-	public void setMirrorComponent(Component component) {
-		mirrorComponent = component;
-	}
-
 	//	 press "s" to unload midi
 	public void keyReleased() {
 		if (key == 'f') {
@@ -193,12 +188,48 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	static public final String ARGS_STANDALONE = "--standalone";
 	static public final String ARGS_CLASS = "--class";
 	static public final String ARGS_MIDI = "--midi";
+	static public final String ARGS_EXTERNAL = "--external";
+	static public final String ARGS_RESOLUTION = "--resolution";
+	static public final String ARGS_SHOWDEVICES = "--listdevices";
 	
+	public static GraphicsDevice findGraphicsDevice(String displayName) {
+		int deviceIndex = -1;
+		try {
+			deviceIndex = Integer.parseInt(displayName);
+		} catch (NumberFormatException e) {
+			// do nothing
+		}
+		
+        GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice devices[] = environment.getScreenDevices();
+        if ((deviceIndex >= 0) && (deviceIndex < devices.length)) {
+        	return devices[deviceIndex];
+        } else {
+        	for (int i = 0; i < devices.length; i++) {
+//        		System.out.println("comparing " + devices[i].getIDstring() + " against \\" + displayName);
+        		if (devices[i].getIDstring().equals("\\" + displayName)) {
+        			return devices[i];
+        		}
+        	}
+        }
+        System.err.println("Display " + displayName + " does not exist, using the default display instead.");
+        return null;
+	}
+	
+	public static void printGraphicsDevices() {
+		GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice devices[] = environment.getScreenDevices();
+    	for (int i = 0; i < devices.length; i++) {
+    		System.out.println(i + ". " + devices[i]);
+    	}
+	}
+
 	public static void main(String args[]) {
 		printDisplayInformation();
 		
 		boolean present = false;
-		
+	
+		String externalDisplayName = "";
 		String midiDeviceName = "MIDI Yoke NT:  3";
 		String appClassName = "bl0rg.vj.Polymaniac";
 		// parse parameters
@@ -206,6 +237,7 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 		String param = null, value = null;
 		
 		GraphicsDevice displayDevice = null;
+		GraphicsDevice externalDevice = null;
 		while (argIndex < args.length) {
 			int equals = args[argIndex].indexOf('=');
 			if (equals != -1) {
@@ -215,37 +247,31 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 				param = args[argIndex];
 			}
 			
-			if (param.equals(ARGS_STANDALONE)) {
-				appClassName = "bl0rg.vj.PolymaniacStandalone";
+			if (param.equals(ARGS_SHOWDEVICES)) {
+				printGraphicsDevices();
+				return;
+			} else if (param.equals(ARGS_STANDALONE)) {
+				appClassName = "bl0rg.vj.polymaniac.PolymaniacStandalone";
 			} else if (param.equals(ARGS_CLASS)) {
 				appClassName= value;
+			} else if (param.equals(ARGS_EXTERNAL)) {
+				externalDevice = findGraphicsDevice(value);
 			} else if (param.equals(ARGS_DISPLAY)) {
-				int deviceIndex = Integer.parseInt(value) - 1;
-				
-				GraphicsEnvironment environment =
-					GraphicsEnvironment.getLocalGraphicsEnvironment();
-				GraphicsDevice devices[] = environment.getScreenDevices();
-				if ((deviceIndex >= 0) && (deviceIndex < devices.length)) {
-					displayDevice = devices[deviceIndex];
-				} else {
-					System.err.println("Display " + value + " does not exist, " + "using the default display instead.");
-				}
+				displayDevice = findGraphicsDevice(value);
 			} else if (param.equals(ARGS_MIDI)) {
 				midiDeviceName = value;
 			}else if (param.equals(ARGS_PRESENT)) {
 	            present = true;
 			}
 
-			
 			argIndex++;
 		}
 		
 		if (displayDevice == null) {
-			GraphicsEnvironment environment =
-				GraphicsEnvironment.getLocalGraphicsEnvironment();
+			System.out.println("using default display device");
+			GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			displayDevice = environment.getDefaultScreenDevice();
 		}
-		
 		
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		
@@ -291,11 +317,6 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 			}
 		}
 		
-		if (displayDevice == null) {
-			GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			displayDevice = environment.getDefaultScreenDevice();
-		}
-		
 		PolymaniacFrame mainFrame;
 	    if (present) {
 	    	mainFrame = new PolymaniacPresentFrame(app, displayDevice.getDefaultConfiguration());
@@ -305,8 +326,10 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	    app.mainFrame = mainFrame;
 		mainFrame.startFrame();
 		
-		
-		// PolymaniacExternalFrame externalFrame = new PolymaniacExternalFrame(app);
-		//	 externalFrame.startFrame();
+		if (externalDevice != null) {
+			// switch configuration on external device if possible XXX
+			PolymaniacExternalFrame externalFrame = new PolymaniacExternalFrame(app, externalDevice.getDefaultConfiguration());
+			externalFrame.startFrame();
+		}
 	}
 }

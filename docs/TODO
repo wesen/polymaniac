@@ -20,12 +20,14 @@ X framerate for MidiApp
  
 X size from 200x200
 
-- quicktime recording
 - vollbild (muss noch in real getestet werden)
 
-- zoom for MidiApp
-  - ist problem wenn baumapp als erste vordergrund app da vor lines rumzeichnet
-  
+X zoom for MidiApp
+  X ist problem wenn baumapp als erste vordergrund app da vor lines rumzeichnet
+
+- quicktime recording
+
+- resolution parameter  
 - json scene beschreibung und so
 - class loader
   - subclass PApplet so that you can take plain PApplets
