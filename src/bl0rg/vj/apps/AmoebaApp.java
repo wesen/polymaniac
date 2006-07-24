@@ -119,7 +119,8 @@ public class AmoebaApp extends MidiApp {
 		int [] pos = Helpers.getRandomPosition(this, new int[] {20, 20});
 		// System.out.println("Creating new particles at " + pos[0] + ", " + pos[1]);
 		for (int i = 0; i < num; i++) {
-			float dir = degrees(atan2(pos[1] - py, pos[0] - px)) - 90;
+			// float dir = degrees(atan2(pos[1] - py, pos[0] - px)) - 90;
+			float dir = (int)(random(36)) * 10;
 				if (particles[i].age < 1) {
 				particles[i].init(pos[0], pos[1], dir);
 			}
