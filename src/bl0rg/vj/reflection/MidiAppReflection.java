@@ -53,14 +53,28 @@ public class MidiAppReflection {
 		return null;
 	}
 	
-	public String[] getEventMethods() {
+	Method[] getMethods(String prefix) {
 		ArrayList methodList = new ArrayList();
-		Method [] methods = midiAppClass.getMethods();
+		Method[] methods = midiAppClass.getMethods();
 		for (int i = 0; i < methods.length; i++) {
 			String name = methods[i].getName();
-			if (name.startsWith("event")) {
-				methodList.add(name);
-			}
+			if (name.startsWith(prefix))
+					methodList.add(methods[i]);
+		}
+		Method []methodsArray = new Method[methodList.size()];
+		for (int i = 0; i < methodsArray.length; i++) {
+			methodsArray[i] = (Method)methodList.get(i);
+		}
+		return methodsArray;
+	}
+	
+	String[] getMethodNames(String prefix) {
+		ArrayList methodList = new ArrayList();
+		Method[] methods = midiAppClass.getMethods();
+		for (int i = 0; i < methods.length; i++) {
+			String name = methods[i].getName();
+			if (name.startsWith(prefix))
+					methodList.add(name);
 		}
 		String []methodsArray = new String[methodList.size()];
 		for (int i = 0; i < methodsArray.length; i++) {
@@ -69,20 +83,56 @@ public class MidiAppReflection {
 		return methodsArray;
 	}
 	
-	public String[] getParamMethods() {
-		ArrayList methodList = new ArrayList();
-		Method [] methods = midiAppClass.getMethods();
-		for (int i = 0; i < methods.length; i++) {
-			String name = methods[i].getName();
-			if (name.startsWith("parameter")) {
-				methodList.add(name);
-			}
+	public String[] getParameterNames() {
+		String []paramMethods = getMethodNames("getParam");
+		String []result = new String[paramMethods.length];
+		for (int i = 0; i < paramMethods.length; i++) {
+			result[i] = paramMethods[i].substring(8);
 		}
-		String []methodsArray = new String[methodList.size()];
-		for (int i = 0; i < methodsArray.length; i++) {
-			methodsArray[i] = (String)methodList.get(i);
+		return result;
+	}
+	
+	public String[] getEventMethodNames() {
+		return getMethodNames("event");
+	}
+	
+	public String[] getParamMethodNames() {
+		return getMethodNames("setParam");
+	}
+	
+	public static Object getParameter(Object obj, String parameter) {
+		if (!(obj instanceof MidiApp)) { 
+			return null;
 		}
-		return methodsArray;
+		Class midiAppClass = obj.getClass();
+		Method method;
+		try {
+			method = midiAppClass.getMethod("getParam" + parameter, new Class[] {});
+			return method.invoke(obj, new Object[] {});
+		} catch (Exception e) {
+			System.out.println("COuld not get parameter " +parameter + " of object " + obj);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static void setParameter(Object obj, String parameter, Object value) {
+		if (!(obj instanceof MidiApp)) {
+			System.out.println(obj + " is not a midiapp");
+			return;
+		}
+		Class midiAppClass = obj.getClass();
+		Class valueClass = value.getClass();
+		Method method;
+		try {
+			method = midiAppClass.getMethod("setParam" + parameter, new Class[] { valueClass });
+			method.invoke(obj, new Object[] { value });
+		} catch (Exception e) {
+			System.out.println("COuld not set parameter " +parameter + " of object " + obj + " to value " + value + " of class " + valueClass);
+			e.printStackTrace();
+			return;
+		}
+		
 	}
 	
 	public MidiApp getClassInstance(PApplet parent, MidiHandler midiHandler, MidiAppMapping mappings[]) {
@@ -127,5 +177,4 @@ public class MidiAppReflection {
 		
 		return appList.iterator();
 	}
-
 }

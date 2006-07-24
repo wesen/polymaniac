@@ -1,4 +1,4 @@
- package bl0rg.vj.polymaniac;
+package bl0rg.vj.polymaniac;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -29,6 +29,9 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	String midiDeviceName = "MIDI Yoke NT:  3";
 	PolymaniacFrame mainFrame = null;
 	
+	int displayWidth = 320;
+	int displayHeight = 240;
+	
 	public void clearApps(ArrayList appList) {
 		for (Iterator i = appList.iterator(); i.hasNext();) {
 			MidiApp app = (MidiApp)i.next();
@@ -44,6 +47,7 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	public void stop() {
 		if (midiHandler != null)
 			midiHandler.close();
+		super.stop();
 	}
 	
 	public void clearForegroundApps() {
@@ -126,9 +130,14 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 		midiHandler.openMidi();
 	}
 	
+	public void setResolution(int width, int height) {
+		this.displayWidth = width;
+		this.displayHeight = height;
+	}
+	
 	public void setup() 
 	{
-		  size(320, 240, JAVA2D);
+		  size(displayWidth, displayHeight, JAVA2D);
 	//	  smooth();
 		  framerate(30);
 
@@ -136,9 +145,11 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 		  
 //		  try {
 			  ContainerApp container = new ContainerApp(this, midiHandler,
-					  new MidiApp[] { new BaumApp(this, midiHandler),
-					                            new LineApp(this, midiHandler) },
-					   new MidiApp[] { new CirclesApp(this, midiHandler),
+					  new MidiApp[] { //new BaumApp(this, midiHandler),
+					                            //new LineApp(this, midiHandler)
+					  new AmoebaApp(this, midiHandler)
+			  },
+					   new MidiApp[] { //new CirclesApp(this, midiHandler),
 					                            new EyeApp(this, midiHandler) });
 			  addBackgroundApp(container);
 					  
@@ -231,10 +242,12 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 	
 		String externalDisplayName = "";
 		String midiDeviceName = "MIDI Yoke NT:  3";
-		String appClassName = "bl0rg.vj.Polymaniac";
+		String appClassName = "bl0rg.vj.polymaniac.Polymaniac";
 		// parse parameters
 		int argIndex = 0;
 		String param = null, value = null;
+		int width = 320;
+		int height = 240;
 		
 		GraphicsDevice displayDevice = null;
 		GraphicsDevice externalDevice = null;
@@ -262,6 +275,14 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 				midiDeviceName = value;
 			}else if (param.equals(ARGS_PRESENT)) {
 	            present = true;
+			} else if (param.equals(ARGS_RESOLUTION)) {
+				String []res = value.split("x");
+				if (res.length != 2) {
+					System.err.println("Could not parse resolution: " + value);
+				} else {
+					width = Integer.parseInt(res[0]);
+					height = Integer.parseInt(res[1]);
+				}
 			}
 
 			argIndex++;
@@ -283,12 +304,12 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 			for (int j = 0; j < mappings.length; j++) {
 				System.out.println("\t" + mappings[j].toString());
 			}
-			String [] methods = midiApp.getEventMethods();
+			String [] methods = midiApp.getEventMethodNames();
 			System.out.println("event methods for " + midiApp.getName());
 			for (int j = 0; j < methods.length; j++) {
 				System.out.println("\t" + methods[j]);
 			}
-			methods = midiApp.getParamMethods();
+			methods = midiApp.getParamMethodNames();
 			System.out.println("param methods for " + midiApp.getName());
 			for (int j = 0; j < methods.length; j++) {
 				System.out.println("\t" + methods[j]);
@@ -305,6 +326,7 @@ public class Polymaniac extends PApplet { //extends MidiApp {
 			System.exit(-1);
 		}
 		
+		app.setResolution(width, height);
 		app.midiDeviceName = midiDeviceName;
 		app.init();
 		//		wait until the applet has figured out its width

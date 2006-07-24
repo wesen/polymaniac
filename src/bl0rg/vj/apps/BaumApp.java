@@ -5,6 +5,7 @@ import bl0rg.vj.midi.MidiHandler;
 import bl0rg.vj.reflection.MidiAppMapping;
 import bl0rg.vj.reflection.MidiAppNoteMapping;
 import bl0rg.vj.reflection.MidiAppParamNoteMapping;
+import bl0rg.vj.reflection.ParameterSetting;
 import processing.core.*;
 import promidi.Controller;
 import promidi.Note;
@@ -20,34 +21,54 @@ public class BaumApp extends MidiApp {
 	ParticleSystem physics;
 	Smoother3D centroid;
 	int nodeColor = 162;
-
+	
 	public void keyReleased() {
 		addNode();
 	}
 	
+	/* node color parameter */
+	
 	public void parameterNodeColor(Controller controller) {
-		parameterNodeColor(controller.getValue() * 2);
+		setParamNodeColor(controller.getValue() * 2);
 	}
 	
-	public void parameterNodeColor(Note note) {
-		parameterNodeColor(min(255, (note.getPitch() -60)* 25));
+	public void setParamNodeColor(Note note) {
+		setParamNodeColor(min(255, (note.getPitch() -60)* 25));
 	}
 	
-	public void parameterNodeColor(int color) {
+	public Integer getParamNodeColor() {
+		return new Integer(nodeColor);
+	}
+	public void setParamNodeColor(Integer color) {
+		setParamNodeColor(color.intValue());
+	}
+	public void setParamNodeColor(int color) {
 		nodeColor = color;
 	}
+	
+	/* class */
 	
 	public BaumApp(PApplet parent, MidiHandler midiHandler) {
 		this(parent, midiHandler, BaumApp.getDefaultMappings());
 	}
 	
 	public BaumApp(PApplet parent, MidiHandler midiHandler, MidiAppMapping[] mappings) {
-		super(parent, midiHandler, mappings);
+		this(parent, midiHandler, mappings, BaumApp.getDefaultSettings());
+	}
+	
+	public BaumApp(PApplet parent, MidiHandler midiHandler, MidiAppMapping[] mappings, ParameterSetting[] settings) {
+		super(parent, midiHandler, mappings, settings);
 		physics = new ParticleSystem(0, 0.25f);
 		centroid = new Smoother3D(0.8f);
 
 		initialize();
 	}
+
+   public static ParameterSetting[] getDefaultSettings() {
+	   return new ParameterSetting[] {
+			   new ParameterSetting("NodeColor", new Integer(255))
+	   };
+   }
 	
    public static MidiAppMapping[] getDefaultMappings() {
 		return new MidiAppMapping[] { 

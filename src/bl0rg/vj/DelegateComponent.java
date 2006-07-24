@@ -31,6 +31,7 @@ public class DelegateComponent extends Canvas implements Runnable {
 	synchronized public void paint(Graphics g) {
 	//	System.out.println("delegate paint");
 		//synchronized(realOne) {
+		// hack hack
 			if ((g != null) && (realOne.g != null) && (realOne.g.image != null)) {
 				//realOne.paint(g);
 				g.drawImage(realOne.g.image, x, y, null);
